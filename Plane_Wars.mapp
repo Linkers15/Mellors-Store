@@ -1,0 +1,285 @@
+app "Plane Wars"
+meta id "games.planewars"
+meta version "1.2"
+meta color "#2563EB"
+icon16
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #FF5252 #FF5252 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #FF5252 #FF5252 #FF5252 #FF5252 #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #FF5252 #FF5252 #FF5252 #FF5252 #FF5252 #FF5252 #FF5252 #FF5252 #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #FF5252 #FF5252 #FF5252 #FF5252 #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #FF5252 #FF5252 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #FACC15 #FACC15 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #FACC15 #FACC15 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #4ADE80 #4ADE80 #4ADE80 #4ADE80 #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #4ADE80 #4ADE80 #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #4ADE80 #4ADE80 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+#07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F #07111F
+endicon
+
+on start
+  let score = 0
+  let dead = 0
+
+  let px = 55
+  let py = 98
+
+  let bullet = 0
+  let bx = 0
+  let by = 0
+  let cooldown = 0
+
+  let e1x = system.random(2, 103)
+  let e1y = 13
+
+  let e2x = system.random(2, 103)
+  let e2y = 42
+
+  let e3x = system.random(2, 103)
+  let e3y = 71
+
+  game.create(128, 110, "#07111F")
+  game.clear("#07111F")
+
+  game.text("Score: 0", 2, 1)
+
+  game.rect(px + 8, py, 3, 10, "#4ADE80")
+  game.rect(px, py + 4, 19, 3, "#4ADE80")
+  game.rect(px + 5, py + 8, 9, 2, "#4ADE80")
+
+  game.start(20, "gameFrame")
+  game.draw(false)
+end
+
+on gameFrame
+  if dead == 0
+
+    # -----------------------
+    # ERASE OLD OBJECTS
+    # -----------------------
+
+    game.rect(px, py, 20, 11, "#07111F")
+
+    game.rect(e1x, e1y, 23, 13, "#07111F")
+    game.rect(e2x, e2y, 23, 13, "#07111F")
+    game.rect(e3x, e3y, 23, 13, "#07111F")
+
+    if bullet == 1
+      game.rect(bx, by, 3, 7, "#07111F")
+    end
+
+    # -----------------------
+    # PLAYER MOVEMENT
+    # -----------------------
+
+    if game.keyDown("ArrowLeft")
+      set px = px - 4
+    end
+
+    if game.keyDown("ArrowRight")
+      set px = px + 4
+    end
+
+    if px < 1
+      set px = 1
+    end
+
+    if px > 107
+      set px = 107
+    end
+
+    # -----------------------
+    # SHOOTING
+    # -----------------------
+
+    if cooldown > 0
+      set cooldown = cooldown - 1
+    end
+
+    if game.keyDown("A") && bullet == 0 && cooldown == 0
+      set bx = px + 8
+      set by = py - 6
+      set bullet = 1
+      set cooldown = 4
+    end
+
+    if bullet == 1
+      set by = by - 5
+
+      if by < 10
+        set bullet = 0
+      end
+    end
+
+    # -----------------------
+    # ENEMY MOVEMENT
+    # -----------------------
+
+    set e1y = e1y + 2
+    set e2y = e2y + 2
+    set e3y = e3y + 2
+
+    # Enemy planes steer toward you.
+
+    if e1x < px
+      set e1x = e1x + 1
+    end
+
+    if e1x > px
+      set e1x = e1x - 1
+    end
+
+    if e2x < px
+      set e2x = e2x + 1
+    end
+
+    if e2x > px
+      set e2x = e2x - 1
+    end
+
+    if e3x < px
+      set e3x = e3x + 1
+    end
+
+    if e3x > px
+      set e3x = e3x - 1
+    end
+
+    # -----------------------
+    # BULLET COLLISIONS
+    # -----------------------
+
+    if bullet == 1 && game.hit(bx, by, 3, 7, e1x, e1y, 22, 12)
+      set bullet = 0
+      set score = score + 1
+      set e1x = system.random(2, 103)
+      set e1y = 12
+    end
+
+    if bullet == 1 && game.hit(bx, by, 3, 7, e2x, e2y, 22, 12)
+      set bullet = 0
+      set score = score + 1
+      set e2x = system.random(2, 103)
+      set e2y = 12
+    end
+
+    if bullet == 1 && game.hit(bx, by, 3, 7, e3x, e3y, 22, 12)
+      set bullet = 0
+      set score = score + 1
+      set e3x = system.random(2, 103)
+      set e3y = 12
+    end
+
+    # -----------------------
+    # PLAYER COLLISIONS
+    # -----------------------
+
+    if game.hit(px, py, 20, 10, e1x, e1y, 22, 12)
+      set dead = 1
+    end
+
+    if game.hit(px, py, 20, 10, e2x, e2y, 22, 12)
+      set dead = 1
+    end
+
+    if game.hit(px, py, 20, 10, e3x, e3y, 22, 12)
+      set dead = 1
+    end
+
+    # -----------------------
+    # RESET MISSED ENEMIES
+    # -----------------------
+
+    if e1y > 109
+      set e1x = system.random(2, 103)
+      set e1y = 12
+    end
+
+    if e2y > 109
+      set e2x = system.random(2, 103)
+      set e2y = 12
+    end
+
+    if e3y > 109
+      set e3x = system.random(2, 103)
+      set e3y = 12
+    end
+
+    # -----------------------
+    # DRAW PLAYER
+    # -----------------------
+
+    game.rect(px + 8, py, 3, 10, "#4ADE80")
+    game.rect(px, py + 4, 19, 3, "#4ADE80")
+    game.rect(px + 5, py + 8, 9, 2, "#4ADE80")
+
+    # -----------------------
+    # DRAW ENEMY 1
+    # -----------------------
+
+    game.rect(e1x + 9, e1y, 4, 12, "#FF5252")
+    game.rect(e1x, e1y + 5, 22, 4, "#FF5252")
+    game.rect(e1x + 5, e1y + 1, 12, 3, "#FF5252")
+
+    # -----------------------
+    # DRAW ENEMY 2
+    # -----------------------
+
+    game.rect(e2x + 9, e2y, 4, 12, "#FF914D")
+    game.rect(e2x, e2y + 5, 22, 4, "#FF914D")
+    game.rect(e2x + 5, e2y + 1, 12, 3, "#FF914D")
+
+    # -----------------------
+    # DRAW ENEMY 3
+    # -----------------------
+
+    game.rect(e3x + 9, e3y, 4, 12, "#FF5252")
+    game.rect(e3x, e3y + 5, 22, 4, "#FF5252")
+    game.rect(e3x + 5, e3y + 1, 12, 3, "#FF5252")
+
+    # -----------------------
+    # DRAW BULLET
+    # -----------------------
+
+    if bullet == 1
+      game.rect(bx, by, 3, 7, "#FACC15")
+    end
+
+    # Redraw score background and score.
+    game.rect(0, 0, 65, 11, "#07111F")
+    game.text("Score: " + score, 2, 1)
+
+    # Flush display without clearing whole screen.
+    game.draw(false)
+
+  else
+
+    game.clear("#07111F")
+    game.text("GAME OVER", 31, 34)
+    game.text("Score: " + score, 38, 54)
+    game.text("B = Exit", 39, 76)
+    game.draw(false)
+
+    if game.keyDown("B")
+      game.stop()
+      system.home()
+    end
+
+  end
+end
+
+on pause
+  game.stop()
+end
+
+on back
+  game.stop()
+end
+
+on resume
+  game.start(20, "gameFrame")
+end
