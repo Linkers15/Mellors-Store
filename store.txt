@@ -1,2 +1,1 @@
-com.example.clock|Clock|1.0|A simple clock for MellorsOS.|https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPOSITORY/main/apps/clock.mapp
-com.example.notesplus|Notes Plus|1.2|An expanded notes app.|https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPOSITORY/main/apps/notes-plus.mapp
+games.planewars|Plane Wars|1.0|A simple clock for MellorsOS.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Plane_Wars.mapp
