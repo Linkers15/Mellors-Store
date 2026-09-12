@@ -1,1 +1,1 @@
-games.planewars|Plane Wars|1.0|A simple clock for MellorsOS.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Plane_Wars.mapp
+games.planewars|Plane Wars|1.0|A simple plane wars game.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Plane_Wars.mapp
