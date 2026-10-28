@@ -1,6 +1,6 @@
 app "Plane Wars"
 meta id "games.planewars"
-meta version "1.2"
+meta version "2.0"
 meta color "#2563EB"
 icon16
 #07111F #07111F #07111F #07111F #07111F #07111F #07111F #FF5252 #FF5252 #07111F #07111F #07111F #07111F #07111F #07111F #07111F
@@ -23,15 +23,15 @@ endicon
 
 on start
   let score = 0
+  let best = data.get("best", 0)
   let dead = 0
+  let retryReady = 0
 
   let px = 55
-  let py = 98
 
   let bullet = 0
   let bx = 0
   let by = 0
-  let cooldown = 0
 
   let e1x = system.random(2, 103)
   let e1y = 13
@@ -42,14 +42,14 @@ on start
   let e3x = system.random(2, 103)
   let e3y = 71
 
-  game.create(128, 110, "#07111F")
+  game.create(128, 128, "#07111F")
   game.clear("#07111F")
 
   game.text("Score: 0", 2, 1)
 
-  game.rect(px + 8, py, 3, 10, "#4ADE80")
-  game.rect(px, py + 4, 19, 3, "#4ADE80")
-  game.rect(px + 5, py + 8, 9, 2, "#4ADE80")
+  game.rect(px + 8, 115, 3, 10, "#4ADE80")
+  game.rect(px, 115 + 4, 19, 3, "#4ADE80")
+  game.rect(px + 5, 115 + 8, 9, 2, "#4ADE80")
 
   game.start(20, "gameFrame")
   game.draw(false)
@@ -62,7 +62,7 @@ on gameFrame
     # ERASE OLD OBJECTS
     # -----------------------
 
-    game.rect(px, py, 20, 11, "#07111F")
+    game.rect(px, 115, 20, 11, "#07111F")
 
     game.rect(e1x, e1y, 23, 13, "#07111F")
     game.rect(e2x, e2y, 23, 13, "#07111F")
@@ -96,15 +96,11 @@ on gameFrame
     # SHOOTING
     # -----------------------
 
-    if cooldown > 0
-      set cooldown = cooldown - 1
-    end
 
-    if game.keyDown("A") && bullet == 0 && cooldown == 0
+    if game.keyDown("A") && bullet == 0
       set bx = px + 8
-      set by = py - 6
+      set by = 115 - 6
       set bullet = 1
-      set cooldown = 4
     end
 
     if bullet == 1
@@ -178,15 +174,15 @@ on gameFrame
     # PLAYER COLLISIONS
     # -----------------------
 
-    if game.hit(px, py, 20, 10, e1x, e1y, 22, 12)
+    if game.hit(px, 115, 20, 10, e1x, e1y, 22, 12)
       set dead = 1
     end
 
-    if game.hit(px, py, 20, 10, e2x, e2y, 22, 12)
+    if game.hit(px, 115, 20, 10, e2x, e2y, 22, 12)
       set dead = 1
     end
 
-    if game.hit(px, py, 20, 10, e3x, e3y, 22, 12)
+    if game.hit(px, 115, 20, 10, e3x, e3y, 22, 12)
       set dead = 1
     end
 
@@ -194,17 +190,17 @@ on gameFrame
     # RESET MISSED ENEMIES
     # -----------------------
 
-    if e1y > 109
+    if e1y > 127
       set e1x = system.random(2, 103)
       set e1y = 12
     end
 
-    if e2y > 109
+    if e2y > 127
       set e2x = system.random(2, 103)
       set e2y = 12
     end
 
-    if e3y > 109
+    if e3y > 127
       set e3x = system.random(2, 103)
       set e3y = 12
     end
@@ -213,9 +209,9 @@ on gameFrame
     # DRAW PLAYER
     # -----------------------
 
-    game.rect(px + 8, py, 3, 10, "#4ADE80")
-    game.rect(px, py + 4, 19, 3, "#4ADE80")
-    game.rect(px + 5, py + 8, 9, 2, "#4ADE80")
+    game.rect(px + 8, 115, 3, 10, "#4ADE80")
+    game.rect(px, 115 + 4, 19, 3, "#4ADE80")
+    game.rect(px + 5, 115 + 8, 9, 2, "#4ADE80")
 
     # -----------------------
     # DRAW ENEMY 1
@@ -259,9 +255,27 @@ on gameFrame
   else
 
     game.clear("#07111F")
-    game.text("GAME OVER", 31, 34)
+    if score > best
+      set best = score
+      data.set("best", best)
+    end
+    game.text("GAME OVER", 31, 24)
+    game.text("Best: " + best, 31, 40)
     game.text("Score: " + score, 38, 54)
-    game.text("B = Exit", 39, 76)
+    game.text("A: retry B: exit", 8, 90)
+    if !game.keyDown("A")
+      set retryReady = 1
+    end
+    if game.keyDown("A") && retryReady == 1
+      set score = 0
+      set dead = 0
+      set bullet = 0
+      set px = 55
+      set e1y = 13
+      set e2y = 42
+      set e3y = 71
+      set retryReady = 0
+    end
     game.draw(false)
 
     if game.keyDown("B")
