@@ -275,7 +275,7 @@ on gameFrame
       set e2y = 42
       set e3y = 71
       set retryReady = 0
-      game.clearEntities()
+      game.clear('')
     end
     game.draw(false)
 
