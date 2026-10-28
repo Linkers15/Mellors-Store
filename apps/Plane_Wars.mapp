@@ -275,7 +275,7 @@ on gameFrame
       set e2y = 42
       set e3y = 71
       set retryReady = 0
-      game.clear('')
+      game.clear("#07111F")
     end
     game.draw(false)
 
