@@ -1,0 +1,82 @@
+app "Meteor Dodge"
+meta id "games.meteordodge"
+meta version "1.0"
+meta color "#FB923C"
+icon16
+#FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C
+#0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A
+#0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A
+#0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #FB923C #FB923C #FB923C #FB923C #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #FB923C #FB923C #FB923C #FB923C #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #FB923C #FB923C #FB923C #FB923C #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #FB923C #FB923C #FB923C #FB923C #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #FB923C #FB923C #FB923C #FB923C #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #FB923C #FB923C #FB923C #FB923C #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A
+#0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A #0F172A
+#0F172A #0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A #0F172A
+#0F172A #FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C #0F172A
+#FB923C #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #0F172A #FB923C
+endicon
+
+on start
+  let px = 58
+  let mx = 30
+  let my = 14
+  let score = 0
+  let dead = 0
+  let ready = 0
+  game.create(128, 128, "#07111F")
+  game.start(20, "gameFrame")
+end
+on gameFrame
+  game.clear("#07111F")
+  if dead == 0
+    if game.keyDown("ArrowLeft")
+      set px = px - 4
+    end
+    if game.keyDown("ArrowRight")
+      set px = px + 4
+    end
+    set px = math.max(0, math.min(116, px))
+    set my = my + 3
+    if my > 127
+      set my = 14
+      set mx = system.random(0, 116)
+      set score = score + 1
+    end
+    if game.hit(px, 112, 12, 10, mx, my, 12, 12)
+      set dead = 1
+      set ready = 0
+    end
+    game.rect(px, 112, 12, 10, "#38BDF8")
+    game.rect(mx, my, 12, 12, "#FB923C")
+    game.text("Dodged: " + score, 2, 1)
+  else
+    game.text("METEOR DODGE", 15, 25)
+    game.text("Score: " + score, 20, 48)
+    game.text("A: retry B: exit", 4, 75)
+    if !game.keyDown("A")
+      set ready = 1
+    end
+    if game.keyDown("A") && ready == 1
+      set score = 0
+      set dead = 0
+      set my = 14
+      set px = 58
+    end
+  end
+  game.draw(false)
+end
+
+on pause
+  game.stop()
+end
+on back
+  game.stop()
+end
+on resume
+  game.start(20, "gameFrame")
+end
