@@ -1,0 +1,292 @@
+app "Minesweeper"
+meta id "games.minesweeper"
+meta version "2.0"
+meta color "#22C55E"
+icon16
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+endicon
+
+on start
+  memory.set("__runtime_check", true)
+  if !memory.get("__runtime_check")
+    dialog.alert("Firmware update needed", "Install the MellorsOS 2.0 storage/notifications update before running this app.")
+    system.home()
+    return false
+  end
+  memory.clear()
+  menu()
+end
+function menu()
+  game.stop()
+  memory.set("mode", "menu")
+  ui.clear()
+  ui.header("Minesweeper", "Choose difficulty")
+  ui.button("easy", "Easy: 6 x 6 / 6 mines")
+  ui.button("normal", "Normal: 8 x 8 / 10 mines")
+  ui.button("hard", "Hard: 10 x 10 / 18 mines")
+  ui.text("Best E: " + best(6) + " N: " + best(8) + " H: " + best(10))
+  ui.button("help", "How to play")
+  ui.button("exit", "Exit")
+end
+function best(i)
+  let v = data.get("best" + i, 0)
+  if v > 0
+    return math.floor(v / 1000) + "s"
+  end
+  return "--"
+end
+function begin(x, y)
+  memory.set("w", x)
+  memory.set("mines", y)
+  memory.set("board", text.repeat("0", x * x))
+  memory.set("seen", text.repeat("#", x * x))
+  memory.set("cursor", 0)
+  memory.set("generated", 0)
+  memory.set("result", "")
+  memory.set("flagMode", 0)
+  memory.set("held", 1)
+  memory.set("elapsed", 0)
+  memory.set("last", system.now())
+  memory.set("mode", "board")
+  memory.set("dirty", 1)
+  game.create(128, 128, "#0F172A")
+  render()
+  game.start(10, "frame")
+end
+on click easy
+  begin(6, 6)
+end
+on click normal
+  begin(8, 10)
+end
+on click hard
+  begin(10, 18)
+end
+on click help
+  dialog.alert("Minesweeper", "Stick moves. A reveals. Hold Up+A to toggle flag mode. In flag mode A adds/removes a flag. B returns to difficulties.", "First reveal is safe. Open a numbered cell again to chord when surrounding flags match. Clear every safe cell to win.")
+end
+on click exit
+  system.home()
+end
+function at(tmp, i)
+  return text.slice(tmp, i, i + 1)
+end
+function mark(i, c)
+  let tmp = memory.get("seen")
+  memory.set("seen", text.slice(tmp, 0, i) + c + text.slice(tmp, i + 1))
+end
+function count(i, c)
+  let v = 0
+  let x = i % memory.get("w")
+  let y = math.floor(i / memory.get("w"))
+  for j from -1 to 1
+    for k from -1 to 1
+      if (j != 0 || k != 0) && x + k >= 0 && x + k < memory.get("w") && y + j >= 0 && y + j < memory.get("w")
+        let a = (y + j) * memory.get("w") + x + k
+        if c == "M"
+          if at(memory.get("board"), a) == "M"
+            set v = v + 1
+          end
+        else
+          if at(memory.get("seen"), a) == c
+            set v = v + 1
+          end
+        end
+      end
+    end
+  end
+  return v
+end
+function generate(i)
+  let v = 0
+  while v < memory.get("mines")
+    let j = system.random(0, memory.get("w") * memory.get("w") - 1)
+    if j != i && at(memory.get("board"), j) != "M"
+      let tmp = memory.get("board")
+      memory.set("board", text.slice(tmp, 0, j) + "M" + text.slice(tmp, j + 1))
+      set v = v + 1
+    end
+  end
+  memory.set("generated", 1)
+  memory.set("last", system.now())
+end
+function reveal(i)
+  if at(memory.get("seen"), i) != "#"
+    return false
+  end
+  if at(memory.get("board"), i) == "M"
+    mark(i, "X")
+    memory.set("result", "BOOM! B: new game")
+    return false
+  end
+  mark(i, value.string(count(i, "M")))
+  return true
+end
+function spread()
+  let v = true
+  while v
+    set v = false
+    for i from 0 to memory.get("w") * memory.get("w") - 1
+      if at(memory.get("seen"), i) == "#" && count(i, "0") > 0
+        reveal(i)
+        set v = true
+      end
+    end
+  end
+end
+function action()
+  let i = memory.get("cursor")
+  let c = at(memory.get("seen"), i)
+  if memory.get("flagMode") == 1
+    if c == "#"
+      mark(i, "F")
+    else
+      if c == "F"
+        mark(i, "#")
+      end
+    end
+    return true
+  end
+  if c == "F"
+    return false
+  end
+  if memory.get("generated") == 0
+    generate(i)
+  end
+  if c == "#"
+    reveal(i)
+  else
+    if c != "0" && count(i, "F") == value.number(c)
+      let x = i % memory.get("w")
+      let y = math.floor(i / memory.get("w"))
+      for j from -1 to 1
+        for k from -1 to 1
+          if x + k >= 0 && x + k < memory.get("w") && y + j >= 0 && y + j < memory.get("w") && memory.get("result") == ""
+            reveal((y + j) * memory.get("w") + x + k)
+          end
+        end
+      end
+    end
+  end
+  if memory.get("result") == ""
+    spread()
+    let v = 0
+    for i from 0 to memory.get("w") * memory.get("w") - 1
+      if at(memory.get("seen"), i) != "#" && at(memory.get("seen"), i) != "F"
+        set v = v + 1
+      end
+    end
+    if v == memory.get("w") * memory.get("w") - memory.get("mines")
+      memory.set("result", "YOU WIN! B: new")
+      let tmp = "best" + memory.get("w")
+      if memory.get("elapsed") < data.get(tmp, 99999999)
+        data.set(tmp, memory.get("elapsed"))
+      end
+    end
+  end
+end
+function render()
+  game.clear("#0F172A")
+  let v = memory.get("w")
+  let a = math.floor(100 / v)
+  let b = math.floor((128 - v * a) / 2)
+  let d = 0
+  for i from 0 to v * v - 1
+    if at(memory.get("seen"), i) == "F"
+      set d = d + 1
+    end
+  end
+  game.text("M:" + memory.get("mines") + " F:" + d + " " + math.floor(memory.get("elapsed") / 1000) + "s", 0, 0)
+  for i from 0 to v * v - 1
+    let x = b + (i % v) * a
+    let y = 13 + math.floor(i / v) * a
+    let c = at(memory.get("seen"), i)
+    let tmp = "#CBD5E1"
+    if c == "#" || c == "F"
+      set tmp = "#475569"
+    end
+    game.rect(x, y, a - 1, a - 1, tmp)
+    if memory.get("result") != "" && at(memory.get("board"), i) == "M"
+      game.circle(x + a / 2, y + a / 2, 3, "#EF4444")
+    else
+      if c != "#" && c != "0"
+        screen.text(c, x + 2, y, "#1D4ED8", 1)
+      end
+    end
+    if i == memory.get("cursor")
+      game.outlineRect(x, y, a, a, "#FACC15")
+    end
+  end
+  if memory.get("result") != ""
+    game.text(memory.get("result"), 0, 116)
+  else
+    if memory.get("flagMode") == 1
+      game.text("FLAG Up+A toggles", 0, 116)
+    else
+      game.text("OPEN Up+A: flags", 0, 116)
+    end
+  end
+  game.draw(false)
+end
+on frame
+  let tmp = system.now()
+  if memory.get("generated") == 1 && memory.get("result") == ""
+    memory.set("elapsed", memory.get("elapsed") + tmp - memory.get("last"))
+  end
+  memory.set("last", tmp)
+  let i = memory.get("cursor")
+  let v = memory.get("w")
+  if game.keyDown("A") && !memory.get("held") && game.keyDown("ArrowUp")
+    memory.set("flagMode", 1 - memory.get("flagMode"))
+  else
+    if game.keyDown("ArrowLeft") && i % v > 0
+      set i = i - 1
+    end
+    if game.keyDown("ArrowRight") && i % v < v - 1
+      set i = i + 1
+    end
+    if game.keyDown("ArrowUp") && i >= v
+      set i = i - v
+    end
+    if game.keyDown("ArrowDown") && i < v * (v - 1)
+      set i = i + v
+    end
+    memory.set("cursor", i)
+    if game.keyDown("A") && !memory.get("held") && memory.get("result") == ""
+      action()
+    end
+  end
+  memory.set("held", game.keyDown("A"))
+  render()
+end
+on back
+  if memory.get("mode") == "board"
+    menu()
+    return true
+  end
+  return false
+end
+on pause
+  game.stop()
+end
+on resume
+  if memory.get("mode") == "board"
+    memory.set("last", system.now())
+    game.start(10, "frame")
+  end
+end

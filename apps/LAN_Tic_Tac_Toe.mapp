@@ -1,0 +1,405 @@
+app "LAN Tic Tac Toe"
+meta id "games.lantictactoe"
+meta version "2.0"
+meta color "#38BDF8"
+icon16
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8 #38BDF8
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+#0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A #0F172A #38BDF8 #0F172A #0F172A #0F172A
+endicon
+
+on start
+  memory.set("__runtime_check", true)
+  if !memory.get("__runtime_check")
+    dialog.alert("Firmware update needed", "Install the MellorsOS 2.0 storage/notifications update before running this app.")
+    system.home()
+    return false
+  end
+  memory.clear()
+  memory.set("role", "menu")
+  memory.set("token", "")
+  memory.set("guest", "")
+  memory.set("cid", value.string(system.random(100000, 999999)))
+  if !permission.ask("network")
+    dialog.alert("Network needed", "Grant Network permission to play over LAN.")
+    system.home()
+    return false
+  end
+  menu()
+end
+function menu()
+  game.stop()
+  server.stop()
+  memory.set("role", "menu")
+  ui.clear()
+  ui.header("LAN Tic Tac Toe", "Two CyberPi devices")
+  ui.button("host", "Host a game (X)")
+  ui.button("scan", "Find LAN games (O)")
+  ui.input("manual", "Or host IP address", "")
+  ui.button("manual", "Join entered IP")
+  ui.button("help", "How to play")
+  ui.button("exit", "Exit")
+end
+on click help
+  dialog.alert("LAN Tic Tac Toe", "Both devices need this firmware/app and the same LAN. Host a game on one; select Find LAN games on the other.", "Stick selects a square; A places your mark. X starts. Host presses A after the result for a rematch. B leaves. Host must keep this app open.")
+end
+on click exit
+  system.home()
+end
+function newRound()
+  memory.set("board", "000000000")
+  memory.set("turn", "X")
+  memory.set("winner", "")
+  memory.set("round", memory.get("round", 0) + 1)
+end
+function stateText()
+  return "TTT2|" + memory.get("token") + "|" + memory.get("board") + "|" + memory.get("turn") + "|" + memory.get("winner") + "|" + memory.get("round") + "|" + memory.get("guest")
+end
+function winner(tmp)
+  for i from 0 to 7
+    let c = text.part("012|345|678|036|147|258|048|246", "|", i)
+    let a = value.number(text.slice(c, 0, 1))
+    let b = value.number(text.slice(c, 1, 2))
+    let d = value.number(text.slice(c, 2, 3))
+    let v = text.slice(tmp, a, a + 1)
+    if v != "0" && v == text.slice(tmp, b, b + 1) && v == text.slice(tmp, d, d + 1)
+      return v
+    end
+  end
+  if !text.contains(tmp, "0")
+    return "D"
+  end
+  return ""
+end
+function play(i, c)
+  if i < 0 || i > 8 || math.floor(i) != i || memory.get("winner") != "" || memory.get("turn") != c || memory.get("guest") == ""
+    return false
+  end
+  let tmp = memory.get("board")
+  if text.slice(tmp, i, i + 1) != "0"
+    return false
+  end
+  set tmp = text.slice(tmp, 0, i) + c + text.slice(tmp, i + 1)
+  memory.set("board", tmp)
+  memory.set("winner", winner(tmp))
+  if c == "X"
+    memory.set("turn", "O")
+  else
+    memory.set("turn", "X")
+  end
+  memory.set("dirty", 1)
+  return true
+end
+function canvas()
+  memory.set("cursor", 0)
+  memory.set("held", 1)
+  memory.set("dirty", 1)
+  game.create(128, 128, "#0F172A")
+  render()
+  game.start(10, "frame")
+end
+on click host
+  if !network.online()
+    dialog.alert("Offline", "Connect both devices to the same Wi-Fi LAN.")
+    return false
+  end
+  if !server.start(8082)
+    dialog.alert("Server unavailable", "Close any other app HTTP server and try again.")
+    return false
+  end
+  memory.set("role", "host")
+  memory.set("token", value.string(system.random(100000, 999999)) + value.string(system.random(100000, 999999)))
+  memory.set("guest", "")
+  memory.set("note", "Waiting for player")
+  memory.set("lastSeen", system.now())
+  newRound()
+  canvas()
+end
+on click scan
+  if !network.online()
+    dialog.alert("Offline", "Connect to Wi-Fi first.")
+    return false
+  end
+  screen.clear("#0F172A")
+  screen.text("Scanning LAN...", 4, 40)
+  screen.present()
+  let tmp = network.discover()
+  let out = ""
+  let v = ""
+  if text.length(tmp) > 0
+  for i from 0 to text.count(tmp, "|") - 1
+    let c = text.part(tmp, "|", i)
+    let a = web.get("http://" + c + ":8082/ttt/discover")
+    if text.startsWith(a, "TTT2|") && text.part(a, "|", 2) == "waiting"
+      if out != ""
+        set out = out + "|"
+      end
+      set out = out + c + ":" + text.part(a, "|", 1)
+      if v == ""
+        set v = c
+      end
+    end
+  end
+  end
+  ui.clear()
+  ui.header("LAN games", "Same discovery as Messages")
+  if out == ""
+    ui.text("No open game found. Start Host on the other CyberPi, then scan again. Manual IP is available from the menu.")
+  else
+    ui.select("peer", "Choose host", v, out)
+    ui.button("join", "Join selected game")
+  end
+  ui.button("scan", "Scan again")
+  ui.button("menu", "Back to menu")
+end
+function accept(tmp)
+  if !text.startsWith(tmp, "TTT2|") || text.length(text.part(tmp, "|", 2)) != 9
+    return false
+  end
+  let c = text.part(tmp, "|", 2)
+  for i from 0 to 8
+    if !text.contains("0XO", text.slice(c, i, i + 1))
+      return false
+    end
+  end
+  memory.set("token", text.part(tmp, "|", 1))
+  memory.set("board", c)
+  memory.set("turn", text.part(tmp, "|", 3))
+  memory.set("winner", text.part(tmp, "|", 4))
+  memory.set("round", value.number(text.part(tmp, "|", 5)))
+  memory.set("guest", text.part(tmp, "|", 6))
+  memory.set("fails", 0)
+  memory.set("note", "Connected")
+  memory.set("dirty", 1)
+  return true
+end
+function join(c)
+  let tmp = web.post("http://" + c + ":8082/ttt/join", memory.get("cid"), "text/plain")
+  if web.status() != 200 || !accept(tmp)
+    dialog.alert("Join failed", "Host is busy or unreachable. Scan again.")
+    return false
+  end
+  memory.set("host", "http://" + c + ":8082")
+  memory.set("role", "client")
+  memory.set("poll", 0)
+  canvas()
+end
+on click join
+  join(ui.value("peer"))
+end
+on click manual
+  let tmp = text.trim(ui.value("manual"))
+  if tmp != "" && !text.contains(tmp, "/") && !text.contains(tmp, ":")
+    join(tmp)
+  else
+    dialog.alert("Host address", "Enter the host's IPv4 address, without http:// or a port.")
+  end
+end
+on click menu
+  menu()
+end
+
+on httpRequest
+  if memory.get("role") != "host"
+    server.respond(503, "Game not hosted")
+    return false
+  end
+  let tmp = server.body()
+  if server.path() == "/ttt/discover" && server.method() == "GET"
+    let c = "busy"
+    if memory.get("guest") == ""
+      set c = "waiting"
+    end
+    server.respond(200, "TTT2|" + network.hostname() + "|" + c)
+    return true
+  end
+  if server.path() == "/ttt/join" && server.method() == "POST"
+    if text.length(tmp) < 6 || text.length(tmp) > 32 || text.contains(tmp, "|")
+      server.respond(400, "Invalid player ID")
+      return false
+    end
+    if memory.get("guest") != "" && memory.get("guest") != tmp
+      server.respond(409, "Game already has two players")
+      return false
+    end
+    if memory.get("guest") == ""
+      memory.set("token", value.string(system.random(100000, 999999)) + value.string(system.random(100000, 999999)))
+    end
+    memory.set("guest", tmp)
+    memory.set("note", "Player O joined")
+    memory.set("lastSeen", system.now())
+    memory.set("dirty", 1)
+    server.respond(200, stateText())
+    return true
+  end
+  if server.method() != "POST" || text.part(tmp, "|", 0) != memory.get("token") || memory.get("guest") == ""
+    server.respond(403, "Join this game first")
+    return false
+  end
+  memory.set("lastSeen", system.now())
+  if server.path() == "/ttt/state"
+    server.respond(200, stateText())
+    return true
+  end
+  if server.path() == "/ttt/move"
+    if text.part(tmp, "|", 1) == value.string(memory.get("round")) && text.length(text.part(tmp, "|", 2)) == 1 && text.contains("012345678", text.part(tmp, "|", 2))
+      if play(value.number(text.part(tmp, "|", 2)), "O")
+        server.respond(200, stateText())
+        return true
+      end
+    end
+    server.respond(409, stateText())
+    return false
+  end
+  if server.path() == "/ttt/leave"
+    memory.set("guest", "")
+    memory.set("note", "Player left; waiting")
+    newRound()
+    memory.set("dirty", 1)
+    server.respond(200, "Left")
+    return true
+  end
+  server.respond(404, "Not found")
+end
+
+function render()
+  game.clear("#0F172A")
+  if memory.get("role") == "host"
+    game.text("HOST X " + network.localIP(), 0, 0)
+  else
+    game.text("PLAYER O", 25, 0)
+  end
+  for i from 0 to 8
+    let x = 18 + (i % 3) * 31
+    let y = 17 + math.floor(i / 3) * 29
+    game.outlineRect(x, y, 29, 27, "#64748B")
+    let c = text.slice(memory.get("board"), i, i + 1)
+    if c == "X"
+      game.line(x + 7, y + 6, x + 22, y + 21, "#38BDF8")
+      game.line(x + 22, y + 6, x + 7, y + 21, "#38BDF8")
+    end
+    if c == "O"
+      game.outlineCircle(x + 14, y + 13, 9, "#FB923C")
+    end
+    if i == memory.get("cursor")
+      game.outlineRect(x + 1, y + 1, 27, 25, "#FACC15")
+    end
+  end
+  let tmp = memory.get("turn") + " to move / B:leave"
+  if memory.get("guest") == ""
+    set tmp = "Waiting for player"
+  end
+  if memory.get("winner") != ""
+    set tmp = memory.get("winner") + " wins. Host A:new"
+    if memory.get("winner") == "D"
+      set tmp = "Draw. Host A:new"
+    end
+  end
+  game.text(tmp, 0, 106)
+  if memory.get("fails", 0) > 0
+    game.text("Retrying... B:leave", 0, 118)
+  end
+  game.draw(false)
+  memory.set("dirty", 0)
+end
+on frame
+  if !network.online()
+    game.stop()
+    server.stop()
+    dialog.alert("Disconnected", "Wi-Fi connection was lost. Rejoin from the menu.")
+    menu()
+    return false
+  end
+  if memory.get("role") == "client" && system.now() - memory.get("poll", 0) > 700
+    memory.set("poll", system.now())
+    let tmp = web.post(memory.get("host") + "/ttt/state", memory.get("token"), "text/plain")
+    if web.status() != 200 || !accept(tmp)
+      memory.set("fails", memory.get("fails", 0) + 1)
+      memory.set("dirty", 1)
+      if memory.get("fails") >= 5
+        dialog.alert("Host unavailable", "The host closed the game or connection was lost. Rejoin from the menu.")
+        menu()
+        return false
+      end
+    end
+  end
+  if memory.get("role") == "host" && memory.get("guest") != "" && system.now() - memory.get("lastSeen") > 20000
+    memory.set("guest", "")
+    memory.set("token", value.string(system.random(100000, 999999)) + value.string(system.random(100000, 999999)))
+    newRound()
+    memory.set("dirty", 1)
+  end
+  let i = memory.get("cursor")
+  if game.keyDown("ArrowLeft") && i % 3 > 0
+    set i = i - 1
+  end
+  if game.keyDown("ArrowRight") && i % 3 < 2
+    set i = i + 1
+  end
+  if game.keyDown("ArrowUp") && i >= 3
+    set i = i - 3
+  end
+  if game.keyDown("ArrowDown") && i < 6
+    set i = i + 3
+  end
+  if i != memory.get("cursor")
+    memory.set("cursor", i)
+    memory.set("dirty", 1)
+  end
+  if game.keyDown("A") && !memory.get("held")
+    if memory.get("role") == "host"
+      if memory.get("winner") != ""
+        newRound()
+        memory.set("dirty", 1)
+      else
+        play(i, "X")
+      end
+    else
+      if memory.get("turn") == "O" && memory.get("winner") == "" && memory.get("fails", 0) == 0
+        let tmp = web.post(memory.get("host") + "/ttt/move", memory.get("token") + "|" + memory.get("round") + "|" + i, "text/plain")
+        if web.status() == 200 || web.status() == 409
+          accept(tmp)
+        end
+      end
+    end
+  end
+  memory.set("held", game.keyDown("A"))
+  if memory.get("dirty") == 1
+    render()
+  end
+end
+on back
+  if memory.get("role") == "host" || memory.get("role") == "client"
+    if memory.get("role") == "client"
+      web.post(memory.get("host") + "/ttt/leave", memory.get("token"), "text/plain")
+    end
+    menu()
+    return true
+  end
+  return false
+end
+on pause
+  game.stop()
+  server.stop()
+  if memory.get("role") == "host" || memory.get("role") == "client"
+    memory.set("role", "paused")
+  end
+end
+on resume
+  if memory.get("role") == "paused"
+    menu()
+  end
+end
