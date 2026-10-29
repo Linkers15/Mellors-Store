@@ -1,6 +1,6 @@
 app "Mellors Draw"
 meta id "tools.mellorsdraw"
-meta version "2.0.2"
+meta version "2.0.3"
 meta color "#D946EF"
 icon16
 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
@@ -147,9 +147,20 @@ function menu()
   ui.header("Mellors Draw", "48 x 40 pixel studio")
   ui.button("draw", "Resume canvas")
   ui.select("tool", "Tool", memory.get("tool"), "pen:Pen|eraser:Eraser|line:Line|rect:Rectangle|ellipse:Ellipse|fill:Bucket fill|pick:Eyedropper")
-  ui.select("color", "Color", memory.get("color"), "0:White|1:Ink|2:Red|3:Orange|4:Yellow|5:Green|6:Teal|7:Sky|8:Blue|9:Purple|a:Violet|b:Pink|c:Brown|d:Gray|e:Black|f:Custom")
+  let c = memory.get("color")
+  let v = c
+  if !text.contains("0123456789ab", c)
+    set v = "1"
+  end
+  ui.select("color", "Palette 1 (0-b)", v, "0:White|1:Ink|2:Red|3:Orange|4:Yellow|5:Green|6:Teal|7:Sky|8:Blue|9:Purple|a:Violet|b:Pink")
+  set v = c
+  if !text.contains("cdef", c)
+    set v = "f"
+  end
+  ui.select("extra", "Palette 2 (c-f)", v, "c:Brown|d:Gray|e:Black|f:Custom")
   ui.slider("size", "Brush / outline width", memory.get("size"), 1, 4, 1)
   ui.input("custom", "Custom #RRGGBB", memory.get("custom"))
+  ui.button("useCustom", "Use custom color")
   ui.input("name", "Filename", memory.get("name"))
   ui.button("undo", "Undo (8 levels)")
   ui.button("redo", "Redo")
@@ -166,7 +177,7 @@ function settings()
     memory.set("anchor", 0)
   end
   memory.set("tool", ui.value("tool"))
-  memory.set("color", ui.value("color"))
+
   memory.set("size", ui.value("size"))
   let tmp = ui.value("custom")
   let v = text.length(tmp) == 7 && text.startsWith(tmp, "#")
@@ -428,4 +439,16 @@ on resume
     render()
     game.start(20, "frame")
   end
+end
+
+on change color
+  memory.set("color", ui.value("color"))
+end
+on change extra
+  memory.set("color", ui.value("extra"))
+end
+on click useCustom
+  settings()
+  memory.set("color", "f")
+  canvas()
 end
