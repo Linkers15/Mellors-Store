@@ -1,5 +1,4 @@
 games.planewars|Plane Wars|1.0|A simple plane wars game.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Plane_Wars.mapp
 apps.stopwatch|Stopwatch|1.0|A simple stopwatch.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Stopwatch.mapp
-apps.pocketsketch|Pocket Sketch|1.0|...|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Pocket_Sketch.mapp
-games.meteor_dodge|Meteor Dodge|1.0|...|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Meteor_Dodge.mapp
-games.sensor_desk|Sensor Desk|1.0|...|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Sensor_Desk.mapp
+games.meteor_dodge|Meteor Dodge|1.0|Easy dodge game.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Meteor_Dodge.mapp
+games.sensor_desk|Sensor Desk|1.0|Test angle sensors on your device.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Sensor_Desk.mapp
