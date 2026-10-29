@@ -1,3 +1,323 @@
+app "Mellors Draw"
+meta id "tools.mellorsdraw"
+meta version "2.0.2"
+meta color "#D946EF"
+icon16
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #F6D9A8 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #F6D9A8 #F6D9A8 #F6D9A8 #FACC15 #FACC15 #F6D9A8 #F6D9A8 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #FACC15 #FACC15 #F6D9A8 #22C55E #22C55E #152238 #152238 #152238 #152238
+#152238 #152238 #F6D9A8 #F6D9A8 #EF4444 #EF4444 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #22C55E #22C55E #F6D9A8 #152238 #152238 #152238
+#152238 #F6D9A8 #F6D9A8 #F6D9A8 #EF4444 #EF4444 #F6D9A8 #F6D9A8 #F6D9A8 #92400E #F8FAFC #F6D9A8 #F6D9A8 #F6D9A8 #152238 #152238
+#152238 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #92400E #F8FAFC #F6D9A8 #F6D9A8 #38BDF8 #38BDF8 #152238 #152238
+#152238 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #92400E #F8FAFC #F6D9A8 #F6D9A8 #F6D9A8 #38BDF8 #38BDF8 #152238 #152238
+#152238 #F6D9A8 #F6D9A8 #F6D9A8 #152238 #152238 #92400E #F8FAFC #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #152238 #152238
+#152238 #F6D9A8 #F6D9A8 #F6D9A8 #152238 #92400E #F8FAFC #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #152238 #152238
+#152238 #152238 #F6D9A8 #F6D9A8 #92400E #F8FAFC #152238 #F6D9A8 #F6D9A8 #F6D9A8 #A855F7 #A855F7 #F6D9A8 #152238 #152238 #152238
+#152238 #152238 #152238 #92400E #F8FAFC #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #A855F7 #A855F7 #152238 #152238 #152238 #152238
+#152238 #152238 #92400E #F8FAFC #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #F6D9A8 #152238 #152238 #152238 #152238 #152238
+#152238 #38BDF8 #38BDF8 #152238 #152238 #152238 #152238 #F6D9A8 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
+endicon
+
+on start
+  memory.set("__runtime_check", true)
+  if !memory.get("__runtime_check")
+    dialog.alert("Firmware update needed", "Install the MellorsOS 2.0 storage/notifications update before running this app.")
+    system.home()
+    return false
+  end
+  memory.clear()
+  memory.set("grid", text.repeat(text.repeat("0", 48), 40))
+  memory.set("custom", "#808080")
+  memory.set("x", 24)
+  memory.set("y", 20)
+  memory.set("tool", "pen")
+  memory.set("color", "1")
+  memory.set("size", 1)
+  memory.set("name", "drawing.mdraw")
+  memory.set("undos", 0)
+  memory.set("redos", 0)
+  memory.set("queue", "")
+  colors()
+  menu()
+end
+
+function palette(c)
+  return memory.get("p" + c, "#FFFFFF")
+end
+function colors()
+  for i from 0 to 15
+    memory.set("p" + text.slice("0123456789abcdef", i, i + 1), text.part("#FFFFFF|#111827|#EF4444|#F97316|#FACC15|#22C55E|#14B8A6|#0EA5E9|#2563EB|#7C3AED|#D946EF|#EC4899|#92400E|#94A3B8|#000000|" + memory.get("custom"), "|", i))
+  end
+end
+
+function pixel(x, y, c)
+  if x < 0 || x > 47 || y < 0 || y > 39
+    return false
+  end
+  let i = y * 48 + x
+  let tmp = memory.get("grid")
+  if text.slice(tmp, i, i + 1) == c
+    return false
+  end
+  memory.set("grid", text.slice(tmp, 0, i) + c + text.slice(tmp, i + 1))
+  game.rect(16 + x * 2, 26 + y * 2, 2, 2, memory.get("p" + c))
+  return true
+end
+
+function brush(x, y, c)
+  for j from 0 to memory.get("size") - 1
+    for k from 0 to memory.get("size") - 1
+      pixel(x + k, y + j, c)
+    end
+  end
+end
+
+function snapshot()
+  let i = memory.get("undos")
+  if i == 8
+    for j from 0 to 6
+      memory.set("u" + j, memory.get("u" + (j + 1)))
+    end
+    set i = 7
+  end
+  memory.set("u" + i, memory.get("grid"))
+  memory.set("undos", i + 1)
+  memory.set("redos", 0)
+end
+
+function render()
+  game.clear("#0F172A")
+  game.text("MELLORS DRAW", 15, 0)
+  game.text(memory.get("tool") + " " + memory.get("size") + "px", 2, 12)
+  let out = memory.get("grid")
+  let c = text.slice(out, 0, 1)
+  if text.replace(out, c, "") == ""
+    game.rect(16, 26, 96, 80, memory.get("p" + c))
+  else
+    for y from 0 to 39
+      let tmp = text.slice(out, y * 48, y * 48 + 48)
+      let c = text.slice(tmp, 0, 1)
+      if text.replace(tmp, c, "") == ""
+        game.rect(16, 26 + y * 2, 96, 2, memory.get("p" + c))
+      else
+        let x = 0
+        while x < 48
+          set c = text.slice(tmp, x, x + 1)
+          let i = x + 1
+          while i < 48 && text.slice(tmp, i, i + 1) == c
+            set i = i + 1
+          end
+          game.rect(16 + x * 2, 26 + y * 2, (i - x) * 2, 2, memory.get("p" + c))
+          set x = i
+        end
+      end
+    end
+  end
+  cursor()
+  game.text("A: use  B: tools", 2, 115)
+  game.draw(false)
+end
+function restore(x, y)
+  game.rect(15, 25, 98, 1, "#0F172A")
+  game.rect(15, 106, 98, 1, "#0F172A")
+  game.rect(15, 25, 1, 82, "#0F172A")
+  game.rect(112, 25, 1, 82, "#0F172A")
+  let tmp = memory.get("grid")
+  for j from math.max(0, y - 1) to math.min(39, y + 1)
+    for k from math.max(0, x - 1) to math.min(47, x + 1)
+      game.rect(16 + k * 2, 26 + j * 2, 2, 2, memory.get("p" + text.slice(tmp, j * 48 + k, j * 48 + k + 1)))
+    end
+  end
+end
+function cursor()
+  game.outlineRect(15 + memory.get("x") * 2, 25 + memory.get("y") * 2, 4, 4, "#FF00FF")
+  game.rect(70, 12, 58, 11, "#0F172A")
+  if memory.get("anchor", 0) == 1
+    game.text("Set end", 70, 12)
+  end
+end
+
+function menu()
+  game.stop()
+  memory.set("mode", "menu")
+  ui.clear()
+  ui.header("Mellors Draw", "48 x 40 pixel studio")
+  ui.button("draw", "Resume canvas")
+  ui.select("tool", "Tool", memory.get("tool"), "pen:Pen|eraser:Eraser|line:Line|rect:Rectangle|ellipse:Ellipse|fill:Bucket fill|pick:Eyedropper")
+  ui.select("color", "Color", memory.get("color"), "0:White|1:Ink|2:Red|3:Orange|4:Yellow|5:Green|6:Teal|7:Sky|8:Blue|9:Purple|a:Violet|b:Pink|c:Brown|d:Gray|e:Black|f:Custom")
+  ui.slider("size", "Brush / outline width", memory.get("size"), 1, 4, 1)
+  ui.input("custom", "Custom #RRGGBB", memory.get("custom"))
+  ui.input("name", "Filename", memory.get("name"))
+  ui.button("undo", "Undo (8 levels)")
+  ui.button("redo", "Redo")
+  ui.button("save", "Save drawing")
+  ui.fileInput("open", "Open .mdraw")
+  ui.button("export", "Export PPM image")
+  ui.button("new", "New blank drawing")
+  ui.button("help", "Controls / help")
+  ui.button("exit", "Exit")
+end
+
+function settings()
+  if memory.get("tool") != ui.value("tool")
+    memory.set("anchor", 0)
+  end
+  memory.set("tool", ui.value("tool"))
+  memory.set("color", ui.value("color"))
+  memory.set("size", ui.value("size"))
+  let tmp = ui.value("custom")
+  let v = text.length(tmp) == 7 && text.startsWith(tmp, "#")
+  for i from 1 to 6
+    if !text.contains("0123456789abcdefABCDEF", text.slice(tmp, i, i + 1))
+      set v = false
+    end
+  end
+  if v
+    memory.set("custom", tmp)
+  end
+  memory.set("name", file.name(ui.value("name")))
+  colors()
+end
+
+function canvas()
+  memory.set("mode", "draw")
+  memory.set("held", 1)
+  game.create(128, 128, "#0F172A")
+  render()
+  game.start(20, "frame")
+end
+
+on click draw
+  settings()
+  canvas()
+end
+on click undo
+  settings()
+  if memory.get("undos") > 0
+    memory.set("r" + memory.get("redos"), memory.get("grid"))
+    memory.set("redos", memory.get("redos") + 1)
+    memory.set("undos", memory.get("undos") - 1)
+    memory.set("grid", memory.get("u" + memory.get("undos")))
+  end
+  canvas()
+end
+on click redo
+  settings()
+  if memory.get("redos") > 0
+    memory.set("u" + memory.get("undos"), memory.get("grid"))
+    memory.set("undos", memory.get("undos") + 1)
+    memory.set("redos", memory.get("redos") - 1)
+    memory.set("grid", memory.get("r" + memory.get("redos")))
+  end
+  canvas()
+end
+on click new
+  if dialog.confirm("New drawing?", "Save first to keep your work.")
+    snapshot()
+    memory.set("grid", text.repeat(text.repeat("0", 48), 40))
+    memory.set("anchor", 0)
+    canvas()
+  end
+end
+on click save
+  settings()
+  if file.write(memory.get("name"), "MDRAW1|48|40|" + memory.get("custom") + "|" + memory.get("grid"))
+    dialog.alert("Saved", memory.get("name"))
+  else
+    dialog.alert("Save failed", "Check free storage.")
+  end
+end
+on file open
+  let tmp = file.read(event.path)
+  let v = text.part(tmp, "|", 4)
+  let c = text.part(tmp, "|", 3)
+  let a = text.startsWith(tmp, "MDRAW1|48|40|") && text.length(v) == 1920 && text.length(c) == 7 && text.startsWith(c, "#")
+  let tmp = v
+  for i from 0 to 15
+    set tmp = text.replace(tmp, text.slice("0123456789abcdef", i, i + 1), "")
+  end
+  if text.length(tmp) != 0
+    set a = false
+  end
+  for i from 1 to 6
+    if !text.contains("0123456789abcdefABCDEF", text.slice(c, i, i + 1))
+      set a = false
+    end
+  end
+  if a
+    snapshot()
+    memory.set("grid", v)
+    memory.set("custom", c)
+    colors()
+    memory.set("name", file.name(event.path))
+    memory.set("anchor", 0)
+    canvas()
+  else
+    dialog.alert("Invalid drawing", "Choose a 48 x 40 MDRAW1 file.")
+  end
+end
+
+function channel(c)
+  return text.indexOf("0123456789abcdef", text.lower(text.slice(c, 0, 1))) * 16 + text.indexOf("0123456789abcdef", text.lower(text.slice(c, 1, 2)))
+end
+on click export
+  settings()
+  let out = "P3\n48 40\n255\n"
+  for y from 0 to 39
+    for x from 0 to 47
+      let c = palette(text.slice(memory.get("grid"), y * 48 + x, y * 48 + x + 1))
+      set out = out + channel(text.slice(c, 1, 3)) + " " + channel(text.slice(c, 3, 5)) + " " + channel(text.slice(c, 5, 7)) + "\n"
+    end
+  end
+  if file.write(memory.get("name") + ".ppm", out)
+    dialog.alert("Exported PPM", memory.get("name") + ".ppm", "Download through MConnect Files.")
+  else
+    dialog.alert("Export failed", "Check free storage.")
+  end
+end
+on click help
+  dialog.alert("Drawing controls", "Stick moves. Hold A for pen/eraser. Tap A twice for shape endpoints. B opens tools.", "Bucket is bounded to matching color. Save/open and PPM export use this app's folder. Custom color changes all custom-color pixels.")
+end
+on click exit
+  system.home()
+end
+
+function enqueue(x, y)
+  if x < 0 || x > 47 || y < 0 || y > 39
+    return false
+  end
+  let i = y * 48 + x
+  if text.slice(memory.get("grid"), i, i + 1) == memory.get("from")
+    pixel(x, y, memory.get("color"))
+    memory.set("queue", memory.get("queue") + i + ",")
+  end
+end
+
+function shape()
+  let a = memory.get("ax")
+  let b = memory.get("ay")
+  let c = memory.get("x")
+  let d = memory.get("y")
+  if memory.get("tool") == "line"
+    let v = math.max(math.abs(c - a), math.abs(d - b))
+    if v == 0
+      brush(a, b, memory.get("color"))
+    else
+      for i from 0 to v
+        brush(math.round(a + (c - a) * i / v), math.round(b + (d - b) * i / v), memory.get("color"))
+      end
+    end
+  else
+    for y from math.min(b, d) to math.max(b, d)
+      for x from math.min(a, c) to math.max(a, c)
+        if memory.get("tool") == "rect"
+          if x == a || x == c || y == b || y == d
+            brush(x, y, memory.get("color"))
+          end
+        else
           let v = math.pow((x - (a + c) / 2) / math.max(0.5, math.abs(c - a) / 2), 2) + math.pow((y - (b + d) / 2) / math.max(0.5, math.abs(d - b) / 2), 2)
           if v > 0.65 && v < 1.3
             brush(x, y, memory.get("color"))

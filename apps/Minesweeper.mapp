@@ -1,24 +1,24 @@
 app "Minesweeper"
 meta id "games.minesweeper"
-meta version "2.0"
+meta version "2.0.2"
 meta color "#22C55E"
 icon16
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E #22C55E
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
-#0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A #0F172A #22C55E #0F172A #0F172A #0F172A
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #152238 #EF4444 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #FACC15 #152238 #FB923C #152238 #152238
+#152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #020617 #020617 #020617 #152238 #FACC15 #152238 #CBD5E1 #CBD5E1 #152238 #152238
+#152238 #152238 #CBD5E1 #CBD5E1 #020617 #020617 #FFFFFF #FFFFFF #020617 #020617 #020617 #152238 #CBD5E1 #CBD5E1 #152238 #152238
+#152238 #152238 #152238 #020617 #020617 #FFFFFF #020617 #020617 #020617 #020617 #020617 #020617 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #020617 #020617 #FFFFFF #020617 #020617 #020617 #020617 #020617 #020617 #152238 #152238 #152238 #152238
+#152238 #152238 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #152238 #152238 #152238
+#CBD5E1 #CBD5E1 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #152238 #CBD5E1 #CBD5E1
+#CBD5E1 #CBD5E1 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #152238 #CBD5E1 #CBD5E1
+#152238 #152238 #152238 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #152238 #152238 #152238 #152238
+#152238 #152238 #152238 #152238 #020617 #020617 #020617 #020617 #020617 #020617 #020617 #152238 #152238 #152238 #152238 #152238
+#152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #020617 #020617 #020617 #152238 #152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238
+#152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238
+#152238 #152238 #152238 #152238 #152238 #152238 #152238 #CBD5E1 #CBD5E1 #152238 #152238 #152238 #152238 #152238 #152238 #152238
 endicon
 
 on start
@@ -63,7 +63,11 @@ function begin(x, y)
   memory.set("elapsed", 0)
   memory.set("last", system.now())
   memory.set("mode", "board")
-  memory.set("dirty", 1)
+  memory.set("flags", 0)
+  memory.set("queue", "")
+  memory.set("second", -1)
+  memory.set("a", math.floor(100 / x))
+  memory.set("b", math.floor((128 - x * memory.get("a")) / 2))
   game.create(128, 128, "#0F172A")
   render()
   game.start(10, "frame")
@@ -88,8 +92,20 @@ function at(tmp, i)
 end
 function mark(i, c)
   let tmp = memory.get("seen")
+  let v = text.slice(tmp, i, i + 1)
+  if v == c
+    return false
+  end
+  if c == "F"
+    memory.set("flags", memory.get("flags") + 1)
+  end
+  if v == "F"
+    memory.set("flags", memory.get("flags") - 1)
+  end
   memory.set("seen", text.slice(tmp, 0, i) + c + text.slice(tmp, i + 1))
+  cell(i, i == memory.get("cursor"))
 end
+
 function count(i, c)
   let v = 0
   let x = i % memory.get("w")
@@ -114,17 +130,31 @@ function count(i, c)
 end
 function generate(i)
   let v = 0
+  let d = memory.get("w")
+  let tmp = text.repeat("0", d * d)
   while v < memory.get("mines")
-    let j = system.random(0, memory.get("w") * memory.get("w") - 1)
-    if j != i && at(memory.get("board"), j) != "M"
-      let tmp = memory.get("board")
-      memory.set("board", text.slice(tmp, 0, j) + "M" + text.slice(tmp, j + 1))
+    let a = system.random(0, d * d - 1)
+    if a != i && text.slice(tmp, a, a + 1) != "M"
+      set tmp = text.slice(tmp, 0, a) + "M" + text.slice(tmp, a + 1)
+      let x = a % d
+      let y = math.floor(a / d)
+      for j from math.max(0, y - 1) to math.min(d - 1, y + 1)
+        for k from math.max(0, x - 1) to math.min(d - 1, x + 1)
+          let b = j * d + k
+          let c = text.slice(tmp, b, b + 1)
+          if c != "M"
+            set tmp = text.slice(tmp, 0, b) + value.string(value.number(c) + 1) + text.slice(tmp, b + 1)
+          end
+        end
+      end
       set v = v + 1
     end
   end
+  memory.set("board", tmp)
   memory.set("generated", 1)
   memory.set("last", system.now())
 end
+
 function reveal(i)
   if at(memory.get("seen"), i) != "#"
     return false
@@ -134,21 +164,31 @@ function reveal(i)
     memory.set("result", "BOOM! B: new game")
     return false
   end
-  mark(i, value.string(count(i, "M")))
+  let c = at(memory.get("board"), i)
+  mark(i, c)
+  if c == "0"
+    memory.set("queue", memory.get("queue") + i + ",")
+  end
   return true
 end
 function spread()
-  let v = true
-  while v
-    set v = false
-    for i from 0 to memory.get("w") * memory.get("w") - 1
-      if at(memory.get("seen"), i) == "#" && count(i, "0") > 0
-        reveal(i)
-        set v = true
+  let d = memory.get("w")
+  while text.length(memory.get("queue")) > 0
+    let tmp = memory.get("queue")
+    let i = value.number(text.part(tmp, ",", 0))
+    memory.set("queue", text.slice(tmp, text.indexOf(tmp, ",") + 1))
+    let x = i % d
+    let y = math.floor(i / d)
+    for j from math.max(0, y - 1) to math.min(d - 1, y + 1)
+      for k from math.max(0, x - 1) to math.min(d - 1, x + 1)
+        if at(memory.get("seen"), j * d + k) == "#"
+          reveal(j * d + k)
+        end
       end
     end
   end
 end
+
 function action()
   let i = memory.get("cursor")
   let c = at(memory.get("seen"), i)
@@ -200,38 +240,33 @@ function action()
     end
   end
 end
-function render()
-  game.clear("#0F172A")
+function cell(i, d)
   let v = memory.get("w")
-  let a = math.floor(100 / v)
-  let b = math.floor((128 - v * a) / 2)
-  let d = 0
-  for i from 0 to v * v - 1
-    if at(memory.get("seen"), i) == "F"
-      set d = d + 1
+  let a = memory.get("a")
+  let x = memory.get("b") + (i % v) * a
+  let y = 13 + math.floor(i / v) * a
+  let c = text.slice(memory.get("seen"), i, i + 1)
+  let tmp = "#CBD5E1"
+  if c == "#" || c == "F"
+    set tmp = "#475569"
+  end
+  game.rect(x, y, a, a, "#0F172A")
+  game.rect(x, y, a - 1, a - 1, tmp)
+  if memory.get("result") != "" && text.slice(memory.get("board"), i, i + 1) == "M"
+    game.circle(x + a / 2, y + a / 2, 3, "#EF4444")
+  else
+    if c != "#" && c != "0"
+      screen.text(c, x + 2, y, "#1D4ED8", 1)
     end
   end
-  game.text("M:" + memory.get("mines") + " F:" + d + " " + math.floor(memory.get("elapsed") / 1000) + "s", 0, 0)
-  for i from 0 to v * v - 1
-    let x = b + (i % v) * a
-    let y = 13 + math.floor(i / v) * a
-    let c = at(memory.get("seen"), i)
-    let tmp = "#CBD5E1"
-    if c == "#" || c == "F"
-      set tmp = "#475569"
-    end
-    game.rect(x, y, a - 1, a - 1, tmp)
-    if memory.get("result") != "" && at(memory.get("board"), i) == "M"
-      game.circle(x + a / 2, y + a / 2, 3, "#EF4444")
-    else
-      if c != "#" && c != "0"
-        screen.text(c, x + 2, y, "#1D4ED8", 1)
-      end
-    end
-    if i == memory.get("cursor")
-      game.outlineRect(x, y, a, a, "#FACC15")
-    end
+  if d
+    game.outlineRect(x, y, a, a, "#FACC15")
   end
+end
+function hud()
+  game.rect(0, 0, 128, 12, "#0F172A")
+  game.text("M:" + memory.get("mines") + " F:" + memory.get("flags") + " " + math.floor(memory.get("elapsed") / 1000) + "s", 0, 0)
+  game.rect(0, 115, 128, 13, "#0F172A")
   if memory.get("result") != ""
     game.text(memory.get("result"), 0, 116)
   else
@@ -241,8 +276,16 @@ function render()
       game.text("OPEN Up+A: flags", 0, 116)
     end
   end
+end
+function render()
+  game.clear("#0F172A")
+  for i from 0 to memory.get("w") * memory.get("w") - 1
+    cell(i, i == memory.get("cursor"))
+  end
+  hud()
   game.draw(false)
 end
+
 on frame
   let tmp = system.now()
   if memory.get("generated") == 1 && memory.get("result") == ""
@@ -250,9 +293,12 @@ on frame
   end
   memory.set("last", tmp)
   let i = memory.get("cursor")
+  let a = i
   let v = memory.get("w")
+  let d = false
   if game.keyDown("A") && !memory.get("held") && game.keyDown("ArrowUp")
     memory.set("flagMode", 1 - memory.get("flagMode"))
+    set d = true
   else
     if game.keyDown("ArrowLeft") && i % v > 0
       set i = i - 1
@@ -267,12 +313,28 @@ on frame
       set i = i + v
     end
     memory.set("cursor", i)
+    if i != a
+      cell(a, false)
+      cell(i, true)
+      set d = true
+    end
     if game.keyDown("A") && !memory.get("held") && memory.get("result") == ""
       action()
+      set d = true
+      if memory.get("result") != ""
+        render()
+      end
     end
   end
   memory.set("held", game.keyDown("A"))
-  render()
+  if math.floor(memory.get("elapsed") / 1000) != memory.get("second")
+    memory.set("second", math.floor(memory.get("elapsed") / 1000))
+    set d = true
+  end
+  if d
+    hud()
+    game.draw(false)
+  end
 end
 on back
   if memory.get("mode") == "board"
@@ -287,6 +349,7 @@ end
 on resume
   if memory.get("mode") == "board"
     memory.set("last", system.now())
+    render()
     game.start(10, "frame")
   end
 end
