@@ -2,3 +2,6 @@ games.planewars|Plane Wars|1.0|A simple plane wars game.|https://raw.githubuserc
 apps.stopwatch|Stopwatch|1.0|A simple stopwatch.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Stopwatch.mapp
 games.meteor_dodge|Meteor Dodge|1.0|Easy dodge game.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Meteor_Dodge.mapp
 games.sensor_desk|Sensor Desk|1.0|Test angle sensors on your device.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Sensor_Desk.mapp
+tools.mellorsdraw|Mellors Draw|2.0|Pixel studio with brushes shapes fill undo save and PPM export. Requires updated MellorsOS 2.0.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Mellors_Draw.mapp
+games.minesweeper|Minesweeper|2.0|Three difficulties flags chording first-click safety and best times. Requires updated MellorsOS 2.0.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/Minesweeper.mapp
+games.lantictactoe|LAN Tic Tac Toe|2.0|Host or discover a two-player game on the same LAN. Requires updated MellorsOS 2.0.|https://raw.githubusercontent.com/Linkers15/Mellors-Store/refs/heads/main/apps/LAN_Tic_Tac_Toe.mapp
