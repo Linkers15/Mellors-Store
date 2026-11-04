@@ -1,4 +1,4 @@
-app "Minesweeper"
+app "Sweeper"
 meta id "games.minesweeper"
 meta version "2.0.2"
 meta color "#22C55E"
